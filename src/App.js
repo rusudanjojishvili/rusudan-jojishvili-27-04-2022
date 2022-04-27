@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react'
+import {Route, Routes, Navigate } from 'react-router-dom'
+import './App.css'
+import WeatherPage from './components/WeatherPage'
+import FavoritesPage from './components/FavoritesPage'
+import { useSelector } from 'react-redux'
+import SearchAutocomplete from './components/SearchAutocomplete'
 
 function App() {
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <SearchAutocomplete/>
+    <div style={{marginTop: 50}}>
+      <Routes>
+          <Route path='/*' element={<Navigate replace to='/local-forecast'/>}/>
+          <Route path='/local-forecast' element={<WeatherPage/>} />
+          <Route path='/favorites-current-weather' element={<FavoritesPage/>} />
+      </Routes>
+    </div>
     </div>
   );
 }
