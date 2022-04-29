@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Grid, TextField, Popper, Typography, Menu, MenuItem, Popover, Box, Button,InputAdornment } from '@mui/material'
+import { Grid, TextField, Popper, Typography, Menu, MenuItem, Popover, Box, Button,InputAdornment, List, ListItem } from '@mui/material'
 import { debounce } from '../utils/helperFunctions'
 import { useSelector, useDispatch } from 'react-redux'
 import * as weatherActions from '../redux/weatherSlice'
 import axios from 'axios'
 import { BASE_URL, END_POINT, apikey } from '../utils/constants'
 import { setParams } from '../utils/setParams'
-import { CustomizedTextField } from '../styles/WeatherStyles'
+import { CustomizedTextField, CustomizedBox,CustomizedGrid } from '../styles/StyledComponents'
 import SearchIcon from '@mui/icons-material/Search'
 
 
@@ -207,23 +207,24 @@ function SearchAutocomplete() {
   const ResultsList = ()=> {
 
     return (
-       <div style={{
-       backgroundColor: '#42728a', 
-       zIndex: 1000, width: '100%', 
-       height: 100, 
-       position:'absolute',
-      //  border: '1px solid #d7d4d4',
-       overflow: 'auto',
-       borderRadius: 20,
-       boxShadow: ' 0.5px 0.5px 3px 0px rgba(33,33,33,1)'}} 
+       <CustomizedBox
        tabIndex='0' id='dropdownList'>
-          {searchResults && searchResults.map((result, index) => (
-            <Grid item style={{ cursor: 'pointer'}} onClick={() => handleChooseCity(result)}  onKeyDown={handleKeyDown}>
-              <Typography id={`autocompletelistItem${index}`}>{result.LocalizedName}</Typography>
-            </Grid>
+         <CustomizedGrid container>
+          {searchResults && searchResults.map((result, index) => ( 
+            <List>
+            {/* <Grid item xs={12} style={{ cursor: 'pointer'}} onClick={() => handleChooseCity(result)}  onKeyDown={handleKeyDown}> */}
+              {/* <Grid container justifyContent='flex-start'> */}
+              <ListItem id={`autocompletelistItem${index}`} style={{ cursor: 'pointer'}} onClick={() => handleChooseCity(result)}  onKeyDown={handleKeyDown}>
+                {result.LocalizedName}
+              </ListItem> 
+                {/* <Typography id={`autocompletelistItem${index}`}>{result.LocalizedName}</Typography> */}
+              {/* </Grid> */}
+            {/* </Grid> */}
+            </List>
           ))}
+          </CustomizedGrid>
             {/* <MemoisedList groupedNames={Array.from(groupedNames.keys())} enigmaIconsName={enigmaIconsName} setSelectName={setSelectName} /> */}
-      </div>
+      </CustomizedBox>
     )
   }
 
@@ -287,7 +288,7 @@ function SearchAutocomplete() {
   }, []);
 
   return (
-    <Grid item style={{ position: "relative", width: 222}} >
+    <Grid item style={{ position: "relative", width: '100%'}} >
     <CustomizedTextField
     size='small' 
     autoComplete='off'
@@ -297,7 +298,7 @@ function SearchAutocomplete() {
     onChange={e => setSearchTerm(e.target.value)} 
     // aria-describedby={id}
     value={searchTerm}
-    placeholder="Icon"
+    placeholder="Search by city"
     InputProps={{
       id: "search-autocomplete",
     //   startAdornment: (<InputAdornment>
@@ -310,7 +311,7 @@ function SearchAutocomplete() {
     //   </InputAdornment>),
       endAdornment: (
         <InputAdornment>
-          <SearchIcon />
+          <SearchIcon/>
         </InputAdornment>
       )
     }}

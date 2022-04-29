@@ -68,10 +68,8 @@ const renderWeatherDetail = (title, value, unit) => (
 )
 
   return (
-    <Grid container justifyContent='center' alignItems='center'
-    style={{height: 'calc(100vh - 70px)', backgroundImage:`url(${DayBackground})`,
-    backgroundPosition: '0% 45%', backgroundSize: '100%'}}>
-      <Grid item xs={9}>
+    <Grid container sx={{height: '100%'}} justifyContent='center' alignItems='center'>
+      <Grid item xs={11} md={10} xl={9}>
         <Grid container sx={innerContainer} >
           <Grid item xs={12}>
             <Grid container justifyContent='space-between' >
@@ -100,21 +98,24 @@ const renderWeatherDetail = (title, value, unit) => (
             </Grid>
           </Grid>
           <Grid item xs={12} sx={{mt: 4}}>
-            <Grid container justifyContent='center' alignItems='center'>
+            <Grid container 
+            justifyContent='center' 
+            lignItems='center' 
+            style={{position: 'relative', right: '30px'}}>
               <Grid item>
-                <Image fileName={currentWeather?.WeatherIcon} />
+                <Image fileName={currentWeather?.WeatherIcon} size={160}/>
               </Grid>
-              <Grid item sx={{pb: 2, ml: -2}}>
+              <Grid item sx={{mt: 2, ml: -2}}>
                 <Typography variant='h4'>
                 {currentWeather?.Temperature?.Metric?.Value}
                 </Typography>
               </Grid>
-              <Grid item sx={{pb: 4, ml: 1}}>
+              <Grid item sx={{mt:1, ml: 1}}>
                 <Typography variant='h4'>
                   {'\u00b0'}
                 </Typography>
               </Grid>
-              <Grid item sx={{pb: 2, ml: 2}}>
+              <Grid item sx={{mt: 2, ml: 2}}>
                 <Typography variant='h4'>
                 {currentWeather?.Temperature?.[temperatureType]?.Unit}
                 </Typography>
@@ -183,7 +184,7 @@ const renderWeatherDetail = (title, value, unit) => (
             </Grid>         
           </Grid>
           <Grid item xs={12} sx={{mt: 7}}>
-              <Grid container  justifyContent='space-evenly'>
+              <Grid container spacing={2} justifyContent='space-evenly'>
               {fiveDayForecast?.length && fiveDayForecast.map(forecast => (
                 <DailyForecastItem forecast={forecast}/>
               ))}

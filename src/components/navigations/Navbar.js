@@ -2,6 +2,7 @@ import React from 'react'
 import { useTheme } from '@mui/material/styles'
 import { Grid, Navbar, Container, AppBar, Typography, Box, Menu, MenuItem, Button, Toolbar,
 IconButton} from '@mui/material'
+import { CustomizedAppBar } from '../../styles/StyledComponents'
 import MenuIcon from '@mui/icons-material/Menu'
 import { NavLink } from 'react-router-dom'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
@@ -31,7 +32,7 @@ const Topbar = ({ColorModeContext}) => {
     };
   
     return (
-      <AppBar position="fixed">
+      <CustomizedAppBar position="fixed">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
@@ -122,7 +123,7 @@ const Topbar = ({ColorModeContext}) => {
             </Box>
           </Toolbar>
         </Container>
-      </AppBar>
+      </CustomizedAppBar>
     );
   };
 export default Topbar

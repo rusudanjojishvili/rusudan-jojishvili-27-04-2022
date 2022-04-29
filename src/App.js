@@ -9,6 +9,9 @@ import SimplePopper from './components/PopperComp'
 import { createTheme, ThemeProvider} from '@mui/material/styles';
 import { amber, deepOrange, grey } from '@mui/material/colors';
 import CssBaseline from "@mui/material/CssBaseline";
+import StyledEngineProvider from "@mui/material/StyledEngineProvider";
+import DayBackground from './assets/images/day.jpg'
+import NightBackground from './assets/images/night1.jpg'
 
 const getDesignTokens = (mode) =>({
   typography: {
@@ -37,7 +40,8 @@ const getDesignTokens = (mode) =>({
       fontWeight: 500
     },
     h1: {
-      fontSize: 24
+      fontSize: 24,
+      fontWeight: 400
     },
     subtitle1: {
       fontSize: 22
@@ -71,11 +75,15 @@ const getDesignTokens = (mode) =>({
     // },
       background: {
       ...(mode === "dark"? {
-        default: 'red',
-        paper: 'red'
+        default: '#171717',
+        paper: '#171717',
+        container: '#171717eb'
       }: {
+        // default: '#113743',
         default: '#1f576e',
-        paper: '#1f576e'
+        // paper: '#113743',
+        paper: '#1f576e',
+        container: '#577e972b'
       })
     },
     text: {
@@ -102,7 +110,7 @@ const getDesignTokens = (mode) =>({
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 function App() {
-  const [mode, setMode] = React.useState('dark');
+  const [mode, setMode] = React.useState('light');
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
@@ -111,16 +119,29 @@ function App() {
     }),
     [],
   );
-  const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+  const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+  
+  const currentWeather = useSelector(state => state.weatherDetails?.currentWeather)
 
+  const isDayTime = useMemo(() => currentWeather.IsDayTime, [currentWeather])
+
+  const backgroundImage = useMemo(() => isDayTime? DayBackground : NightBackground, [isDayTime])
+  console.log(theme, 'isDayTime')
 
   return (
     <ColorModeContext.Provider value={colorMode}>
     <ThemeProvider theme={theme}>
+    <StyledEngineProvider injectFirst>
     <CssBaseline/>
     <div className="App">
     <Topbar ColorModeContext={ColorModeContext}/>
-    <div style={{marginTop: 68}}>
+    <div style={{marginTop: 69,
+      height: 'calc(100vh - 70px)', 
+      overflow: 'auto',
+      backgroundImage:`url(${backgroundImage})`,
+      backgroundPosition: isDayTime?'0% 45%' : '0% 0%', 
+      backgroundSize: 'cover'
+    }}>
       <Routes>
           <Route path='/*' element={<Navigate replace to='/home'/>}/>
           <Route path='/home' element={<WeatherPage/>} />
@@ -128,6 +149,7 @@ function App() {
       </Routes>
     </div>
     </div>
+    </StyledEngineProvider>
     </ThemeProvider>
     </ColorModeContext.Provider>
   );
