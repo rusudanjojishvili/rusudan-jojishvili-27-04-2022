@@ -29,9 +29,13 @@ function FavoritesPage() {
     <Grid container sx={{height: '100%'}} justifyContent='center' alignItems='center'>
       <Grid item xs={11} md={10} xl={9} style={{height: '100%'}}>
         <Grid container sx={{...innerContainer, height: '100%'}}>
+         {favorites?.length?
           <Grid item xs={12}>
-            <Grid container spacing={2} justifyContent='center'>
-            {favorites?.length && favorites.map(favoriteItem =>{
+           <Grid container justifyContent='center'>
+            <Typography variant='h3'>Favorites</Typography>
+           </Grid>
+            <Grid container spacing={2} justifyContent='center' sx={{ mt:2}}>
+            {favorites.map(favoriteItem =>{
               return (
                 <Grid item>
                   <CustomizedButton component={Link} to='/home' onClick={() => setChosenFavorite(favoriteItem)}>
@@ -40,7 +44,13 @@ function FavoritesPage() {
               </Grid>
             )})}
             </Grid>
-          </Grid>  
+          </Grid>:
+          <Grid item xs={12}>
+          <Grid container justifyContent='center'>
+            <Typography variant='h3'>No favorites yet</Typography>
+          </Grid>
+          </Grid>
+         } 
         </Grid>
       </Grid>
     </Grid>

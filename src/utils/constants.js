@@ -72,14 +72,14 @@ export const getDesignTokens = (mode) =>({
           default: '#171717',
           paper: '#171717',
           container: '#171717eb',
-          hover: '#FFFFFF40'
+          hover: '#837a7a40'
         }: {
           // default: '#113743',
           default: '#1f576e',
           // paper: '#113743',
           paper: '#1f576e',
           container: '#577e972b',
-          hover: '#FFFFFF40'
+          hover: '#837a7a40'
         })
       },
       text: {

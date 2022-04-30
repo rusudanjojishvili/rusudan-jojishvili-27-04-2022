@@ -53,7 +53,7 @@ function Favorite({favoriteItem}) {
   }
 
   useEffect(() => {
-    // getCurrentWeather()
+    getCurrentWeather()
   }, [favoriteItem])
   
   console.log(currentWeather, 'currentWeatherinternal')

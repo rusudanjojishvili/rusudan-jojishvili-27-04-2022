@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, memo } from "react";
 import { Grid, TextField, Popper, Typography, Menu, MenuItem, Popover, Box, Button,InputAdornment, List, ListItem } from '@mui/material'
 import { debounce } from '../utils/helperFunctions'
 import { useSelector, useDispatch } from 'react-redux'
@@ -14,6 +14,7 @@ import * as snackbarActions from '../redux/snackbarSlice';
 function SearchAutocomplete() {
   const [searchTerm, setSearchTerm] = useState("");
   // const [anchorEl, setAnchorEl] = useState(null)
+  const [resultIndex, setResultIndex] = useState(0)
   const [searchResults, setSearchResults] = useState([
     {
         "Version": 1,
@@ -203,6 +204,17 @@ function SearchAutocomplete() {
     }))
   }
 
+  const AllList = ({result, index}) => (
+    <CustomizedListItem 
+      style={{backgroundColor: (index + 1) === resultIndex && '#FFFFFF40'}}
+      id={`autocompletelistItem${index}`}  
+      onClick={() => handleChooseCity(result)}  
+      onKeyDown={handleKeyDown}>
+      {result.LocalizedName}
+    </CustomizedListItem> 
+  )
+
+  const MemoisedList = React.memo(AllList)
 
   
   const ResultsList = ()=> {
@@ -212,23 +224,19 @@ function SearchAutocomplete() {
        tabIndex='0' id='dropdownList'>
          <CustomizedGrid container>
          <List>
-          {searchResults && searchResults.map((result, index) => ( 
-              <CustomizedListItem 
-              id={`autocompletelistItem${index}`}  
-              onClick={() => handleChooseCity(result)}  
-              onKeyDown={handleKeyDown}>
-                {result.LocalizedName}
-              </CustomizedListItem> 
-            
-          ))}
+          {searchResults && searchResults.length? searchResults.map((result, index) => ( 
+            <MemoisedList result={result} index={index}/>      
+          )):
+            <CustomizedListItem>No options</CustomizedListItem>}
           </List>
           </CustomizedGrid>
-            {/* <MemoisedList groupedNames={Array.from(groupedNames.keys())} enigmaIconsName={enigmaIconsName} setSelectName={setSelectName} /> */}
+          
       </CustomizedBox>
     )
   }
 
-  
+  const MemoisedListBox = React.memo(ResultsList)
+
   useEffect(() => {
     if (searchTerm !== "") {
       verify(searchTerm);
@@ -240,7 +248,7 @@ function SearchAutocomplete() {
     debounce(name => {
      
       // send request to the server
-      // searchByCity(name)
+      searchByCity(name)
     }, 200),
     []
   );
@@ -249,35 +257,50 @@ function SearchAutocomplete() {
   const handleKeyDown = (e) => {
     // UP ARROW
     if (e.keyCode === 38) {
-      // if (suggestionIndex === 0) {
-      //   return;
-      // }
+      if (resultIndex === 0 || resultIndex === 1) {
+        // return;
+        setResultIndex(searchResults.length)
+      }else{
       console.log('38')
-      // setSuggestionIndex(suggestionIndex - 1);
+      // console.log(searchResults[0], '111111')
+      setResultIndex(resultIndex - 1);
+      }
     }
     // DOWN ARROW
     else if (e.keyCode === 40) {
       console.log('40')
-      // if (suggestionIndex - 1 === suggestions.length) {
-      //   return;
-      // }
-      // setSuggestionIndex(suggestionIndex + 1);
+      if (resultIndex === searchResults.length) {
+        // return;
+        setResultIndex(1)
+      }else{
+      setResultIndex(resultIndex + 1);
+      }
     }
     // ENTER
     else if (e.keyCode === 13) {
       console.log('13')
-
-      // setValue(suggestions[suggestionIndex]);
-      // setSuggestionIndex(0);
+      // setSearchTerm(searchResults[resultIndex])
+      // verify(searchResults[resultIndex - 1].LocalizedName)
+      handleChooseCity(searchResults[resultIndex - 1])
+      console.log(searchResults[resultIndex - 1].LocalizedName,'searchResults[resultIndex]')
+      setOpen(false)
+      setSearchTerm('')
+      
+      // setValue(suggestions[resultIndex]);
+      setResultIndex(0);
       // setSuggestionsActive(false);
     }
   };
+  console.log(resultIndex)
 
 
   useEffect(() => {
     const handleClose = (e) => {
       if(e.target && (e.target.id === 'dropdownList' || e.target.id === 'search-autocomplete')) return
-      else {open && setOpen(false)}
+      else {
+        open && setOpen(false)
+        setResultIndex(0)
+      }
   
     }
     document.body.addEventListener("click", handleClose)
@@ -293,11 +316,10 @@ function SearchAutocomplete() {
     size='small' 
     autoComplete='off'
     fullWidth
-    onKeyDown={handleKeyDown}
-    // onClick={handleClick}
+    onClick={() => !open && searchTerm && setOpen(true)}
     onChange={e => setSearchTerm(e.target.value)} 
-    // aria-describedby={id}
     value={searchTerm}
+    onKeyDown={handleKeyDown}
     placeholder="Search by city"
     InputProps={{
       id: "search-autocomplete",
@@ -318,12 +340,12 @@ function SearchAutocomplete() {
 
     required
   />
-  {searchTerm !== '' && open && <ResultsList />}
+  {searchTerm !== '' && open && <MemoisedListBox />}
     </Grid>
   )
 }
 
-export default SearchAutocomplete
+export default memo(SearchAutocomplete)
 // const ResultsList = function (props) {
 
   //   return (

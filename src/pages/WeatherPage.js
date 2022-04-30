@@ -22,8 +22,8 @@ const dispatch = useDispatch()
 //#1f576e header color
 useEffect(() => {
   if(currentCity){
-    // dispatch(weatherActions.getCurrentWeather(currentCity.key))
-    // dispatch(weatherActions.getFiveDayForecast(currentCity.key))
+    dispatch(weatherActions.getCurrentWeather(currentCity.key))
+    dispatch(weatherActions.getFiveDayForecast(currentCity.key))
   }
 },[currentCity])
 

@@ -580,7 +580,7 @@ export const getCurrentWeather = (locationId) => async(dispatch) => {
     }
 
     try {
-      const res = await axios.get(`${BASE_URL}${END_POINT.CURRENT_CONDITIONS}/v12/${locationId}`, 
+      const res = await axios.get(`${BASE_URL}${END_POINT.CURRENT_CONDITIONS}/v1/${locationId}`, 
       setParams(requestParams))
     // const res = null
       if(res?.status === 200 && res?.data?.length){
