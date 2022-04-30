@@ -2,6 +2,7 @@ import axios from 'axios'
 import { createSlice } from '@reduxjs/toolkit'
 import { BASE_URL, END_POINT, apikey } from '../utils/constants'
 import { setParams } from '../utils/setParams'
+import * as snackbarActions from './snackbarSlice';
 
 export const weatherSlice = createSlice({
     name: 'weather',
@@ -579,14 +580,14 @@ export const getCurrentWeather = (locationId) => async(dispatch) => {
     }
 
     try {
-      const res = await axios.get(`${BASE_URL}${END_POINT.CURRENT_CONDITIONS}/v1/${locationId}`, 
+      const res = await axios.get(`${BASE_URL}${END_POINT.CURRENT_CONDITIONS}/v12/${locationId}`, 
       setParams(requestParams))
     // const res = null
       if(res?.status === 200 && res?.data?.length){
-          dispatch(setCurrentWeather(res.data[0]))
+        dispatch(setCurrentWeather(res.data[0]))
       }
     } catch (error) {
-
+        dispatch(snackbarActions.setSnackBar('error', 'Error loading data', 3000));
     }
 }
 
@@ -607,7 +608,7 @@ export const getFiveDayForecast= (locationId) => async(dispatch) => {
           dispatch(setFiveDateForecast(res?.data?.DailyForecasts))
       }
     } catch (error) {
-
+      dispatch(snackbarActions.setSnackBar('error', 'Error loading Forecast data', 3000));
     }
 }
 // export const searchByCity= (searchTerm) => async(dispatch) => {

@@ -6,8 +6,9 @@ import * as weatherActions from '../redux/weatherSlice'
 import axios from 'axios'
 import { BASE_URL, END_POINT, apikey } from '../utils/constants'
 import { setParams } from '../utils/setParams'
-import { CustomizedTextField, CustomizedBox,CustomizedGrid } from '../styles/StyledComponents'
+import { CustomizedTextField, CustomizedBox,CustomizedGrid, CustomizedListItem } from '../styles/StyledComponents'
 import SearchIcon from '@mui/icons-material/Search'
+import * as snackbarActions from '../redux/snackbarSlice';
 
 
 function SearchAutocomplete() {
@@ -186,7 +187,7 @@ function SearchAutocomplete() {
           setSearchResults(res.data)
       }
     } catch (error) {
-
+      dispatch(snackbarActions.setSnackBar('error', 'Error loading data', 3000));
     }
   }
 
@@ -210,18 +211,17 @@ function SearchAutocomplete() {
        <CustomizedBox
        tabIndex='0' id='dropdownList'>
          <CustomizedGrid container>
+         <List>
           {searchResults && searchResults.map((result, index) => ( 
-            <List>
-            {/* <Grid item xs={12} style={{ cursor: 'pointer'}} onClick={() => handleChooseCity(result)}  onKeyDown={handleKeyDown}> */}
-              {/* <Grid container justifyContent='flex-start'> */}
-              <ListItem id={`autocompletelistItem${index}`} style={{ cursor: 'pointer'}} onClick={() => handleChooseCity(result)}  onKeyDown={handleKeyDown}>
+              <CustomizedListItem 
+              id={`autocompletelistItem${index}`}  
+              onClick={() => handleChooseCity(result)}  
+              onKeyDown={handleKeyDown}>
                 {result.LocalizedName}
-              </ListItem> 
-                {/* <Typography id={`autocompletelistItem${index}`}>{result.LocalizedName}</Typography> */}
-              {/* </Grid> */}
-            {/* </Grid> */}
-            </List>
+              </CustomizedListItem> 
+            
           ))}
+          </List>
           </CustomizedGrid>
             {/* <MemoisedList groupedNames={Array.from(groupedNames.keys())} enigmaIconsName={enigmaIconsName} setSelectName={setSelectName} /> */}
       </CustomizedBox>

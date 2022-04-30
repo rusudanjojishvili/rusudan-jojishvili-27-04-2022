@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react'
+import Favorite from '../components/Favorite'
 import { useSelector, useDispatch } from 'react-redux'
-import { Grid, Typography } from '@mui/material'
-import { NavLink } from 'react-router-dom'
+import { Grid, Typography, Button } from '@mui/material'
+import { Link } from 'react-router-dom'
 import * as weatherActions from '../redux/weatherSlice'
+import { innerContainer } from '../styles/WeatherStyleSXConstants'
+import { CustomizedButton } from '../styles/StyledComponents'
 
 function FavoritesPage() {
     const favorites = useSelector(state => state.weatherDetails?.favorites)
@@ -20,15 +23,26 @@ function FavoritesPage() {
       }))
     }
 
+    console.log(favorites,'favorites')
+
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        {favorites?.length && favorites.map(favorite =>{
-          return (
-          <NavLink to='/home' onClick={() => setChosenFavorite(favorite)}><Typography>{favorite.name}</Typography></NavLink>
-        )})}
+    <Grid container sx={{height: '100%'}} justifyContent='center' alignItems='center'>
+      <Grid item xs={11} md={10} xl={9} style={{height: '100%'}}>
+        <Grid container sx={{...innerContainer, height: '100%'}}>
+          <Grid item xs={12}>
+            <Grid container spacing={2} justifyContent='center'>
+            {favorites?.length && favorites.map(favoriteItem =>{
+              return (
+                <Grid item>
+                  <CustomizedButton component={Link} to='/home' onClick={() => setChosenFavorite(favoriteItem)}>
+                    <Favorite favoriteItem={favoriteItem}/>
+                  </CustomizedButton>
+              </Grid>
+            )})}
+            </Grid>
+          </Grid>  
+        </Grid>
       </Grid>
-      
     </Grid>
   )
 }

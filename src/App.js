@@ -1,111 +1,24 @@
-import React, { useEffect,useMemo } from 'react'
+import React, { useEffect,useMemo, useState } from 'react'
 import {Route, Routes, Navigate } from 'react-router-dom'
 import './App.css'
 import WeatherPage from './pages/WeatherPage'
 import FavoritesPage from './pages/FavoritesPage'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import * as weatherActions from './redux/weatherSlice'
 import Topbar from './components/navigations/Navbar'
 import SimplePopper from './components/PopperComp'
-import { createTheme, ThemeProvider} from '@mui/material/styles';
+import { createTheme, ThemeProvider, StyledEngineProvider} from '@mui/material/styles';
+import { getDesignTokens } from './utils/constants'
 import { amber, deepOrange, grey } from '@mui/material/colors';
 import CssBaseline from "@mui/material/CssBaseline";
-import StyledEngineProvider from "@mui/material/StyledEngineProvider";
 import DayBackground from './assets/images/day.jpg'
 import NightBackground from './assets/images/night1.jpg'
+import Snackbar from './components/snackbar'
+import { setParams } from './utils/setParams'
+import { BASE_URL, END_POINT, apikey } from './utils/constants'
+import axios from 'axios'
 
-const getDesignTokens = (mode) =>({
-  typography: {
-    fontFamily: 'Montserrat',
-    // fontWeight: 500,
-    // h6: {
-    //   color: '#B6B6B6',
-    //   fontSize: 12,
-    //   fontWeight: 300
-    // },
-    // h5: {
-    //   color: '#FFFFFF',
-    //   fontSize: 12,
-    //   fontWeight: 300
-    // },
-    // leave
-    h4: {
-      fontSize: 39    
-    },
-    // leave
-    h3: {
-      fontSize: 34
-    },
-    h2: {
-      fontSize: 29,
-      fontWeight: 500
-    },
-    h1: {
-      fontSize: 24,
-      fontWeight: 400
-    },
-    subtitle1: {
-      fontSize: 22
-    },
-    subtitle2: {
-      fontSize: 19,
-      fontWeight: 400
-    },  
-    body2: {
-      fontSize: 18
-    },
-    // leave
-    caption: {
-      fontSize: 11,
-      color: '#FBFBFB',
-      fontFamily: "'Ubuntu', sans-serif",
-      fontWeight: 400
-    },
-  },
-  palette: {
-    mode,
-    // primary: {
-    //   ...amber,
-    //   ...(mode === "dark"
-    //     ? {
-    //         main: amber[300]
-    //       }
-    //     : { 
-    //       main: amber[300] 
-    //     })
-    // },
-      background: {
-      ...(mode === "dark"? {
-        default: '#171717',
-        paper: '#171717',
-        container: '#171717eb'
-      }: {
-        // default: '#113743',
-        default: '#1f576e',
-        // paper: '#113743',
-        paper: '#1f576e',
-        container: '#577e972b'
-      })
-    },
-    text: {
-      ...(mode === "dark"
-        ? {
-            primary: '#969E9F',
-            secondary: '#969E9F'
-        }
-        : 
-        {
-            // primary: "#FFFFFF40",
-            primary: "#d7d4d4",
-            // secondary: '#FFFFFF40'
-            secondary: '#d7d4d4'
-          })
-    },
-  
-  },
-  shape: {
-      borderRadius: 1
-    }
-})
+
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
@@ -126,7 +39,90 @@ function App() {
   const isDayTime = useMemo(() => currentWeather.IsDayTime, [currentWeather])
 
   const backgroundImage = useMemo(() => isDayTime? DayBackground : NightBackground, [isDayTime])
-  console.log(theme, 'isDayTime')
+
+  const containerStyle = {
+    marginTop: '64px',
+    height: 'calc(100vh - 70px)', 
+    overflow: 'auto',
+    backgroundImage:`url(${backgroundImage})`,
+    backgroundPosition: isDayTime?'0% 45%' : '0% 0%', 
+    backgroundSize: 'cover',
+    padding: '20px 5px'
+  }
+
+  const currentCity = useSelector(state => state.weatherDetails?.currentLocation)
+
+  const dispatch = useDispatch()
+
+  const getLocation = async({latLongPair}) => {
+    console.log(latLongPair, 'latLongPair')
+    let requestParams = {
+        apikey,
+        q: latLongPair,
+        language: 'en-us'
+    }
+    try {
+      // const res = (
+      //   `${BASE_URL}${END_POINT.LOCATIONS}/v1/cities/geoposition/search`, 
+      //   setParams(requestParams)
+      //   )
+      const res = await axios.get(
+        `${BASE_URL}${END_POINT.LOCATIONS}/v1/cities/geoposition/search`, 
+        setParams(requestParams)
+        )
+      console.log(res,'res')
+    // const res = null
+      if(res?.status === 200){
+        console.log(res.data, 'res.data')
+          return res.data
+      }
+    } catch (error) {
+        return 'error'
+    }
+  }
+
+  const getCurrentCoordinates = () => {
+    navigator.geolocation.getCurrentPosition(
+      async function(position) {
+      console.log("Latitude is :", position.coords.latitude);
+      console.log("Longitude is :", position.coords.longitude);
+      // send request to the accuweather locationKey api to receive the locationKey
+      let myLocation = await getLocation({
+        latLongPair: `${position.coords.latitude},${position.coords.longitude}`
+      })// {'\u00b0'}
+      // console.log(`${position.coords.latitude {\&#44} position.coords.longitude`}}, 'fggggggggg')
+      if(myLocation){
+        dispatch(weatherActions.setCurrentLocation({
+          key: myLocation.Key, 
+          city: myLocation.AdministrativeArea?.EnglishName,
+          country: myLocation.Country?.EnglishName
+        }))
+      }
+    },
+      function(error) {
+        console.error("Error Code = " + error.code + " - " + error.message); 
+        dispatch(weatherActions.setCurrentLocation({
+          key: 215854, 
+          city: "Tel Aviv",
+          country: "Israel"
+        }))
+      }
+    ); 
+   
+  }
+
+
+  useEffect(() => {
+    if(currentCity === null){
+
+      // getCurrentCoordinates()
+      dispatch(weatherActions.setCurrentLocation({
+        key: 215854, 
+        city: "Tel Aviv",
+        country: "Israel"
+      }))
+    }
+  },[currentCity])
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -135,17 +131,12 @@ function App() {
     <CssBaseline/>
     <div className="App">
     <Topbar ColorModeContext={ColorModeContext}/>
-    <div style={{marginTop: 69,
-      height: 'calc(100vh - 70px)', 
-      overflow: 'auto',
-      backgroundImage:`url(${backgroundImage})`,
-      backgroundPosition: isDayTime?'0% 45%' : '0% 0%', 
-      backgroundSize: 'cover'
-    }}>
+    <Snackbar/>
+    <div style={containerStyle}>
       <Routes>
           <Route path='/*' element={<Navigate replace to='/home'/>}/>
           <Route path='/home' element={<WeatherPage/>} />
-          <Route path='/favorites-current-weather' element={<FavoritesPage/>} />
+          <Route path='/favorites' element={<FavoritesPage/>} />
       </Routes>
     </div>
     </div>

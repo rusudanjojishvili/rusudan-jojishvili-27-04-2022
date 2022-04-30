@@ -95,28 +95,31 @@ const Topbar = ({ColorModeContext}) => {
             >
               LOGO
             </Typography>
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            <Box sx={{ flexGrow: 1, alignItems: 'center', display: { xs: 'none', md: 'flex' } }}>
               {/* {pages.map((page) => ( */}
                 <Button
                 //   key={page}
+                  // className={(navData) => navData.isActive? 'activeNavlink' : 'navlink'}
                   component={NavLink}
                   to='/home'
                 //   className={(navData) => navData.isActive? classes.activeNavlink : classes.navlink}
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
+                  sx={{ my: 2, ml:1, borderRadius: '10px', color: 'white', display: 'block' }}
                 >
-                  Weather forecast
+                  Home
                 </Button>
                 <Button
                 //   key={page}
                   component={NavLink}
-                  to='/favorites-current-weather'
+                  to='/favorites'
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
+                  sx={{ my: 2, ml: 1, borderRadius: '10px', color: 'white', display: 'block' }}
                 >
                   Favorites
                 </Button>
-                <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+                <IconButton 
+                sx={{ ml: 2, width: '40px', height: '40px' }} 
+                onClick={colorMode.toggleColorMode} color="inherit">
                     {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
                 </IconButton>
               {/* ))} */}
