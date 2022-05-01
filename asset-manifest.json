@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/rusudan-jojishvili-27-04-2022/static/css/main.b99022af.css",
-    "main.js": "/rusudan-jojishvili-27-04-2022/static/js/main.525b16d2.js",
+    "main.js": "/rusudan-jojishvili-27-04-2022/static/js/main.d8bafc4b.js",
     "static/js/729.110a82a1.chunk.js": "/rusudan-jojishvili-27-04-2022/static/js/729.110a82a1.chunk.js",
     "static/js/72.1b78afdb.chunk.js": "/rusudan-jojishvili-27-04-2022/static/js/72.1b78afdb.chunk.js",
     "static/js/355.2651fa7c.chunk.js": "/rusudan-jojishvili-27-04-2022/static/js/355.2651fa7c.chunk.js",
@@ -52,11 +52,11 @@
     "index.html": "/rusudan-jojishvili-27-04-2022/index.html",
     "static/media/locationIcon.svg": "/rusudan-jojishvili-27-04-2022/static/media/locationIcon.19a22eea297d99e84958c837d66ef09a.svg",
     "main.b99022af.css.map": "/rusudan-jojishvili-27-04-2022/static/css/main.b99022af.css.map",
-    "main.525b16d2.js.map": "/rusudan-jojishvili-27-04-2022/static/js/main.525b16d2.js.map",
+    "main.d8bafc4b.js.map": "/rusudan-jojishvili-27-04-2022/static/js/main.d8bafc4b.js.map",
     "787.b644e732.chunk.js.map": "/rusudan-jojishvili-27-04-2022/static/js/787.b644e732.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b99022af.css",
-    "static/js/main.525b16d2.js"
+    "static/js/main.d8bafc4b.js"
   ]
 }
