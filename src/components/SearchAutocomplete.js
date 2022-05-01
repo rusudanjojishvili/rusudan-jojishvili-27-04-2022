@@ -237,6 +237,13 @@ function SearchAutocomplete() {
 
   const MemoisedListBox = React.memo(ResultsList)
 
+  const handleChangeInput = (e) => {
+    let value = e.target.value
+
+    value = value.replace(/[^A-Za-z]/ig, '')
+    setSearchTerm(value)
+  }
+
   useEffect(() => {
     if (searchTerm !== "") {
       verify(searchTerm);
@@ -248,7 +255,7 @@ function SearchAutocomplete() {
     debounce(name => {
      
       // send request to the server
-      searchByCity(name)
+      // searchByCity(name)
     }, 200),
     []
   );
@@ -317,7 +324,7 @@ function SearchAutocomplete() {
     autoComplete='off'
     fullWidth
     onClick={() => !open && searchTerm && setOpen(true)}
-    onChange={e => setSearchTerm(e.target.value)} 
+    onChange={handleChangeInput} 
     value={searchTerm}
     onKeyDown={handleKeyDown}
     placeholder="Search by city"

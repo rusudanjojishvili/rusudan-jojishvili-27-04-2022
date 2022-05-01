@@ -1,5 +1,6 @@
 import React, { useEffect,useMemo, useState } from 'react'
 import {Route, Routes, Navigate } from 'react-router-dom'
+import { Grid } from '@mui/material'
 import './App.css'
 import WeatherPage from './pages/WeatherPage'
 import FavoritesPage from './pages/FavoritesPage'
@@ -47,7 +48,7 @@ function App() {
     backgroundImage:`url(${backgroundImage})`,
     backgroundPosition: isDayTime?'0% 45%' : '0% 0%', 
     backgroundSize: 'cover',
-    padding: '20px 5px'
+    padding: {xs:'20px 10px', sm: '20px'}
   }
 
   const currentCity = useSelector(state => state.weatherDetails?.currentLocation)
@@ -132,13 +133,13 @@ function App() {
     <div className="App">
     <Topbar ColorModeContext={ColorModeContext}/>
     <Snackbar/>
-    <div style={containerStyle}>
+    <Grid sx={containerStyle}>
       <Routes>
           <Route path='/*' element={<Navigate replace to='/home'/>}/>
           <Route path='/home' element={<WeatherPage/>} />
           <Route path='/favorites' element={<FavoritesPage/>} />
       </Routes>
-    </div>
+    </Grid>
     </div>
     </StyledEngineProvider>
     </ThemeProvider>

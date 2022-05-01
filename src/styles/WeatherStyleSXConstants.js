@@ -6,16 +6,16 @@ export const innerContainer = {
     textAlign: 'center',
     // -webkit-backdrop-filter: blur(10px);
     backdropFilter: 'blur(10px)',
-    p: '30px',
+    p:{ xs: '0px', sm: '20px', md:'30px' },
     borderRadius: 20,
     }
 
 export const forecastItem = {
     border: '1px solid #d7d4d4', 
-    p: '25px 5px', 
-    width: 200,
-    height: 200,
-    borderRadius: 24
+    p: {xs: '5px 2px' , sm: '25px 5px'}, 
+    width: {xs: '65px' , sm: '100px', lg: '200px'},
+    height: {xs: '150px' , sm: '150px', lg: '200px'},
+    borderRadius: {xs: '15px' , sm: '24px'}
 }
 
 export const snackbarRoot = {

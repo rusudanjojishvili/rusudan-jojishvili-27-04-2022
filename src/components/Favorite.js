@@ -7,31 +7,7 @@ import { forecastItem } from '../styles/WeatherStyleSXConstants'
 import Image from '../utils/PNGIcon'
 
 function Favorite({favoriteItem}) {
-  const [currentWeather, setCurrentWeather] = useState(
-    {
-        "LocalObservationDateTime": "2022-04-30T14:29:00+03:00",
-        "EpochTime": 1651318140,
-        "WeatherText": "Sunny",
-        "WeatherIcon": 1,
-        "HasPrecipitation": false,
-        "PrecipitationType": null,
-        "IsDayTime": true,
-        "Temperature": {
-            "Metric": {
-                "Value": 23.8,
-                "Unit": "C",
-                "UnitType": 17
-            },
-            "Imperial": {
-                "Value": 75,
-                "Unit": "F",
-                "UnitType": 18
-            }
-        },
-        "MobileLink": "http://www.accuweather.com/en/il/tel-aviv/215854/current-weather/215854?lang=en-us",
-        "Link": "http://www.accuweather.com/en/il/tel-aviv/215854/current-weather/215854?lang=en-us"
-    }
-)
+  const [currentWeather, setCurrentWeather] = useState(null)
 
   const getCurrentWeather = async() => {
     let requestParams = {
@@ -53,7 +29,7 @@ function Favorite({favoriteItem}) {
   }
 
   useEffect(() => {
-    getCurrentWeather()
+    // getCurrentWeather()
   }, [favoriteItem])
   
   console.log(currentWeather, 'currentWeatherinternal')

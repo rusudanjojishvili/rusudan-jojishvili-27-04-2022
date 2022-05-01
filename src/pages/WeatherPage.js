@@ -10,7 +10,8 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import DayBackground from '../assets/images/day.jpg'
 import { ReactComponent as LocationIcon } from '../assets/icons/locationIcon.svg'
-import { innerContainer } from '../styles/WeatherStyleSXConstants'
+import { innerContainer} from '../styles/WeatherStyleSXConstants'
+import { Container } from '../styles/StyledComponents'
 
 function WeatherPage() {
 const currentWeather = useSelector(state => state.weatherDetails?.currentWeather)
@@ -22,8 +23,8 @@ const dispatch = useDispatch()
 //#1f576e header color
 useEffect(() => {
   if(currentCity){
-    dispatch(weatherActions.getCurrentWeather(currentCity.key))
-    dispatch(weatherActions.getFiveDayForecast(currentCity.key))
+    // dispatch(weatherActions.getCurrentWeather(currentCity.key))
+    // dispatch(weatherActions.getFiveDayForecast(currentCity.key))
   }
 },[currentCity])
 
@@ -46,47 +47,57 @@ const addToFavorites = () => {
 }
 
 const renderWeatherDetail = (title, value, unit) => (
-  <Grid item>
-  <Grid container>
+<Grid item>
+  <Grid container direction={{xs: 'column-reverse', sm: 'row'}}>
     <Grid item>
       <Typography variant='body2'>
         {title} 
       </Typography>
     </Grid>
     <Grid item>
-      <Typography variant='body2' sx={{ml:2}}>
-        {value}
-      </Typography>
+      <Grid container direction='row' justifyContent='center'>
+        <Grid item>
+          <Typography sx={{ml: {xs: '0px', sm: 2}, fontSize: {xs: '22px', sm: '16px'}}}>
+            {value}
+          </Typography>
+        </Grid>         
+        <Grid item>
+          <Typography variant='body2' sx={{mb: -2, ml: '5px'}}>
+            {unit}
+          </Typography>
+        </Grid>
+      </Grid>
     </Grid>
-    <Grid item>
-      <Typography variant='body2' sx={{mb: -2, ml: '5px'}}>
-        {unit}
-      </Typography>
-    </Grid>        
+      
   </Grid>                
 </Grid>
 )
 
   return (
     <Grid container sx={{height: '100%'}} justifyContent='center' alignItems='center'>
-      <Grid item xs={11} md={10} xl={9}>
-        <Grid container sx={innerContainer} >
-          <Grid item xs={12}>
-            <Grid container justifyContent='space-between' >
-              <Grid item xs={4}>
+      <Container item> 
+        <Grid container sx={innerContainer}>
+          <Grid item xs={12} sx={{display: { xs: 'flex', sm: 'none'}, p: '10px' }}>
+            <Grid container justifyContent='center'>
+              <SearchAutocomplete/>                
+            </Grid>
+          </Grid>
+          <Grid item xs={12} sx={{ p: { xs: '10px', sm: '0'} }}>
+            <Grid container justifyContent='space-between' alignItems='center'>
+              <Grid item xs={9} sm={4}>
                   <Grid container alignItems='center'>
                     <LocationIcon/>  
-                    <Typography variant='subtitle2' sx={{ ml: 2}}>
+                    <Typography sx={{ ml: 2, fontSize: { xs: 20, sm: 18 }}}>
                       {currentCity?.city}, {currentCity?.country}
                     </Typography>               
                   </Grid>
               </Grid>
-              <Grid item xs={4} alignItems='flex-end'>
+              <Grid item sx={{display: { xs: 'none', sm: 'flex' }}} sm={6} md={4} alignItems='flex-end'>
                 <Grid container justifyContent='center'>
                   <SearchAutocomplete/>                
                 </Grid>
               </Grid>
-              <Grid item xs={4} alignItems='flex-end'>
+              <Grid item sm={2} md={4} alignItems='flex-end'>
               <Grid container justifyContent='flex-end'>
                 <IconButton onClick={addToFavorites}>
                   {favorites.some(favorite => favorite.id === currentCity.key)?
@@ -94,10 +105,9 @@ const renderWeatherDetail = (title, value, unit) => (
                 </IconButton>            
               </Grid>           
               </Grid>
-
             </Grid>
           </Grid>
-          <Grid item xs={12} sx={{mt: 3}}>
+          <Grid item xs={12} sx={{mt: { xs: 1, sm: 3}}}>
             <Grid container 
             justifyContent='center' 
             alignItems='center' 
@@ -105,7 +115,7 @@ const renderWeatherDetail = (title, value, unit) => (
               <Grid item>
                 <Image fileName={currentWeather?.WeatherIcon} size={130}/>
               </Grid>
-              <Grid item sx={{mt: 2, ml: -2}}>
+              <Grid item >
                 <Typography variant='h4'>
                 {currentWeather?.Temperature?.Metric?.Value}
                 </Typography>
@@ -115,7 +125,7 @@ const renderWeatherDetail = (title, value, unit) => (
                   {'\u00b0'}
                 </Typography>
               </Grid>
-              <Grid item sx={{mt: 2, ml: 2}}>
+              <Grid item sx={{ ml: 2}}>
                 <Typography variant='h4'>
                 {currentWeather?.Temperature?.[temperatureType]?.Unit}
                 </Typography>
@@ -136,12 +146,12 @@ const renderWeatherDetail = (title, value, unit) => (
                 </Grid>              
             </Grid>
           </Grid>
-          <Grid item xs={12} sx={{mt: 3}}>
+          <Grid item xs={12} sx={{mt: 3, p: { xs: '15px', sm: 0}}}>
             <Grid container justifyContent='center'>
             {/* up to lg should be fixed value */}
               <Grid item sx={{width:600}}>
                <Grid container>
-                <Grid item xs={12} style={{padding: '10px'}}>
+                <Grid item xs={12} style={{padding: {xs: 0, sm: '10px'}}}>
                   <Grid container justifyContent='space-between'>
                     {renderWeatherDetail(
                       'Feels like', 
@@ -149,9 +159,9 @@ const renderWeatherDetail = (title, value, unit) => (
                       '\u00b0')
                     }
                     {renderWeatherDetail(
-                      'wind', 
-                      currentWeather?.Wind?.Direction?.Localized,
-                      currentWeather?.Wind?.Speed?.[temperatureType]?.Value)
+                      'Wind', 
+                      `${currentWeather?.Wind?.Direction?.Localized} ${currentWeather?.Wind?.Speed?.[temperatureType]?.Value}`
+                      )
                     }
                     {renderWeatherDetail(
                       'Visibility', 
@@ -160,7 +170,7 @@ const renderWeatherDetail = (title, value, unit) => (
                     }
                   </Grid>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} sx={{mt: '13px'}}>
                   <Grid container justifyContent='space-between'>
                     {renderWeatherDetail(
                       'Barometer', 
@@ -183,15 +193,15 @@ const renderWeatherDetail = (title, value, unit) => (
               </Grid>
             </Grid>         
           </Grid>
-          <Grid item xs={12} sx={{mt: 5}}>
-              <Grid container spacing={2} justifyContent='space-evenly'>
+          <Grid item xs={12} sx={{mt: 5, pb: {xs: '10px', sm: 0}}}>
+            <Grid container spacing={{xs: 0, sm: 1}} justifyContent='space-evenly'>
               {fiveDayForecast?.length && fiveDayForecast.map(forecast => (
                 <DailyForecastItem forecast={forecast}/>
-              ))}
-          </Grid>
+              ))} 
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      </Container>
     </Grid>
     
   )

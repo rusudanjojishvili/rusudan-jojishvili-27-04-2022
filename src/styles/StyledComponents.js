@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles'
-import { AppBar, TextField, Box, ListItem, Button, Alert } from '@mui/material'
+import { AppBar, TextField, Box, ListItem, Button, Alert, Grid } from '@mui/material'
 
 export const CustomizedAppBar = styled(AppBar)({
   '&.MuiAppBar-root': {
@@ -8,6 +8,17 @@ export const CustomizedAppBar = styled(AppBar)({
     backgroundImage: 'none',
   },
 });
+export const Container = styled(Grid)(({ theme, color }) => ({
+  [theme.breakpoints.between('xs', 'md')]: {
+    width: '100%'
+  },
+  [theme.breakpoints.only('lg')]: {
+    width: '95%'
+  },
+  [theme.breakpoints.up('xl')]: {
+    width: '1145px'
+  },
+}));
 export const CustomizedButton = styled(Button)(({ theme, color }) => ({
   '&.MuiButton-root': {
     textTransform: 'capitalize',
