@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkrusudan_jojishvili_27_04_2022=self.webpackChunkrusudan_jojishvili_27_04_2022||[]).push([[849],{9849:function(s,i,a){s.exports=a.p+"static/media/15.9aac7942a26db293440b.png"}}]);
