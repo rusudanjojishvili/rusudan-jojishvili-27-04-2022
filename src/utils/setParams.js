@@ -1,3 +1,4 @@
+// reusable function for setting the query params of axios
 export function setParams(props) {
     let params = new URLSearchParams();
   

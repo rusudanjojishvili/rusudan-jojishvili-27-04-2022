@@ -6,17 +6,14 @@ export const END_POINT = {
     FORECASTS: 'forecasts',
     LOCATIONS: 'locations'
 }
-export const apikey = 'AnAVVmha9YFZ9Sh5FUUgxuidXTtAe932'
+export const apikey = 'VGYzZ5LOPNl4qGfGYu6s4VbPqRtkZ7XI'
+// export const apikey = '3IGuGfQ8aE7xhQ1V2CkC0RQJSTsAdriT'
+// export const apikey = 'AnAVVmha9YFZ9Sh5FUUgxuidXTtAe932'
 
+// global theme definitions
 export const getDesignTokens = (mode) =>({
     typography: {
       fontFamily: 'Montserrat',
-      // fontWeight: 500,
-      // h6: {
-      //   color: '#B6B6B6',
-      //   fontSize: 12,
-      //   fontWeight: 300
-      // },
       h5: {
        fontSize: 28
       },
@@ -41,9 +38,6 @@ export const getDesignTokens = (mode) =>({
         fontSize: 16,
         fontWeight: 400
       }, 
-      // body1: {
-      //   fontSize: 20
-      // } ,
       body2: {
         fontSize: 16
       },
@@ -57,16 +51,6 @@ export const getDesignTokens = (mode) =>({
     },
     palette: {
       mode,
-      // primary: {
-      //   ...amber,
-      //   ...(mode === "dark"
-      //     ? {
-      //         main: amber[300]
-      //       }
-      //     : { 
-      //       main: amber[300] 
-      //     })
-      // },
         background: {
         ...(mode === "dark"? {
           default: '#171717',
@@ -74,9 +58,7 @@ export const getDesignTokens = (mode) =>({
           container: '#171717eb',
           hover: '#837a7a40'
         }: {
-          // default: '#113743',
           default: '#1f576e',
-          // paper: '#113743',
           paper: '#1f576e',
           container: '#577e972b',
           hover: '#837a7a40'
@@ -90,9 +72,7 @@ export const getDesignTokens = (mode) =>({
           }
           : 
           {
-              // primary: "#FFFFFF40",
               primary: "#d7d4d4",
-              // secondary: '#FFFFFF40'
               secondary: '#d7d4d4'
             })
       },

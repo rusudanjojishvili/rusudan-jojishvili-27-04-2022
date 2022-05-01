@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import DailyForecastItem from '../components/DailyForecastItem'
 import { useSelector, useDispatch } from 'react-redux'
 import * as weatherActions from '../redux/weatherSlice'
-import { Grid, Typography, IconButton } from '@mui/material'
+import { Grid, Typography, IconButton, CircularProgress } from '@mui/material'
 import SearchAutocomplete from '../components/SearchAutocomplete'
 import { parseISO, format } from 'date-fns'
 import Image from '../utils/PNGIcon'
@@ -23,26 +23,20 @@ const dispatch = useDispatch()
 //#1f576e header color
 useEffect(() => {
   if(currentCity){
-    // dispatch(weatherActions.getCurrentWeather(currentCity.key))
+    dispatch(weatherActions.getCurrentWeather(currentCity.key))
     // dispatch(weatherActions.getFiveDayForecast(currentCity.key))
 
   }
+  // call the api's each time the current city is changed/searched or navigated through the favorites page
 },[currentCity])
 
-// useEffect(() => {
-//   if(temperatureType && currentCity){
-//     dispatch(weatherActions.getFiveDayForecast(currentCity.key))
-//   }
-// },[temperatureType, currentCity])
+useEffect(() => {
+  if(temperatureType && currentCity){
+    dispatch(weatherActions.getFiveDayForecast(currentCity.key))
+  }
+},[temperatureType, currentCity])
 
-// useEffect(() => {
-//   if(currentCity === null)
-//     dispatch(weatherActions.setCurrentLocation({
-//       key: 215854, 
-//       city: "Tel Aviv",
-//       country: "Israel"
-//     }))
-// },[currentCity])
+
 
 const addToFavorites = () => {
   dispatch(weatherActions.addToFavorites({
@@ -53,6 +47,7 @@ const addToFavorites = () => {
   }))
 }
 
+// reusable function that returns sample grid for showing current weather details
 const renderWeatherDetail = (title, value, unit) => (
 <Grid item>
   <Grid container direction={{xs: 'column-reverse', sm: 'row'}}>
@@ -74,14 +69,14 @@ const renderWeatherDetail = (title, value, unit) => (
           </Typography>
         </Grid>
       </Grid>
-    </Grid>
-      
+    </Grid>     
   </Grid>                
 </Grid>
 )
 
   return (
-    <Grid container sx={{height: '100%'}} justifyContent='center' alignItems='center'>
+   <Grid container sx={{height: '100%'}} justifyContent='center' alignItems='center'>
+      {currentWeather && fiveDayForecast? 
       <Container item> 
         <Grid container sx={innerContainer}>
           <Grid item xs={12} sx={{display: { xs: 'flex', sm: 'none'}, p: '10px' }}>
@@ -107,7 +102,7 @@ const renderWeatherDetail = (title, value, unit) => (
               <Grid item sm={2} md={4} alignItems='flex-end'>
               <Grid container justifyContent='flex-end'>
                 <IconButton onClick={addToFavorites}>
-                  {favorites.some(favorite => favorite.id === currentCity.key)?
+                  {currentCity && favorites?.some(favorite => favorite.id === currentCity.key)?
                   <FavoriteIcon style={{ color: '#a50606', fontSize: 28}}/> : <FavoriteBorderIcon style={{ color: '#FFFFFF', fontSize: 28}}/>}   
                 </IconButton>            
               </Grid>           
@@ -120,9 +115,9 @@ const renderWeatherDetail = (title, value, unit) => (
             alignItems='center' 
             style={{position: 'relative', right: '30px'}}>
               <Grid item>
-                <Image fileName={currentWeather?.WeatherIcon} size={130}/>
+                {currentWeather?.WeatherIcon && <Image fileName={currentWeather.WeatherIcon} size={130}/>}
               </Grid>
-              <Grid item >
+              <Grid item>
                 <Typography variant='h4'>
                 {currentWeather?.Temperature?.[temperatureType]?.Value}
                 </Typography>
@@ -148,7 +143,7 @@ const renderWeatherDetail = (title, value, unit) => (
                 </Grid>              
                 <Grid item >
                 <Typography variant='subtitle2'>
-                  Updated as of {format(parseISO(currentWeather?.LocalObservationDateTime), 'HH:mm')}
+                  Updated as of {currentWeather?.LocalObservationDateTime && format(parseISO(currentWeather.LocalObservationDateTime), 'HH:mm')}
                 </Typography>
                 </Grid>              
             </Grid>
@@ -202,14 +197,23 @@ const renderWeatherDetail = (title, value, unit) => (
           </Grid>
           <Grid item xs={12} sx={{mt: 5, pb: {xs: '10px', sm: 0}}}>
             <Grid container spacing={{xs: 0, sm: 1}} justifyContent='space-evenly'>
-              {fiveDayForecast?.length && fiveDayForecast.map(forecast => (
-                <DailyForecastItem forecast={forecast}/>
+              {fiveDayForecast?.length && fiveDayForecast.map((forecast, index) => (
+                <DailyForecastItem key={index} forecast={forecast}/>
               ))} 
             </Grid>
           </Grid>
         </Grid>
-      </Container>
+        </Container>:
+          <Container item>
+          <Grid container sx={{...innerContainer, height: 400, width: '100%'}} justifyContent='center' alignItems='center'>
+            <Grid item xs={12}>
+            <CircularProgress sx={{ color: '#FFFFFF'}} />
+            </Grid>
+          </Grid>
+        </Container>}
+      
     </Grid>
+
     
   )
 }

@@ -9,7 +9,7 @@ function DailyForecastItem({forecast}) {
     <Grid item>
         <Grid container sx={forecastItem}>
         <Grid item xs={12}>
-            <Typography sx={{fontSize: {xs: 14 , sm: 20}, fontWeight: {xs: 500 , sm: 400}}}>{format(parseISO(forecast?.Date), 'EEE d')}</Typography>
+            <Typography sx={{fontSize: {xs: 14 , sm: 20}, fontWeight: {xs: 500 , sm: 400}}}>{forecast?.Date && format(parseISO(forecast.Date), 'EEE d')}</Typography>
         </Grid>
         <Grid item xs={12} sx={{mt:1}}>
           <Image fileName={forecast?.Day?.Icon} size={50}/>        

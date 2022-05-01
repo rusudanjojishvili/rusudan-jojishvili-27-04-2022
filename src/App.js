@@ -7,10 +7,8 @@ import FavoritesPage from './pages/FavoritesPage'
 import { useSelector, useDispatch } from 'react-redux'
 import * as weatherActions from './redux/weatherSlice'
 import Topbar from './components/navigations/Navbar'
-import SimplePopper from './components/PopperComp'
 import { createTheme, ThemeProvider, StyledEngineProvider} from '@mui/material/styles';
 import { getDesignTokens } from './utils/constants'
-import { amber, deepOrange, grey } from '@mui/material/colors';
 import CssBaseline from "@mui/material/CssBaseline";
 import DayBackground from './assets/images/day.jpg'
 import NightBackground from './assets/images/night1.jpg'
@@ -20,11 +18,12 @@ import { BASE_URL, END_POINT, apikey } from './utils/constants'
 import axios from 'axios'
 
 
-
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 function App() {
   const [mode, setMode] = React.useState('light');
+
+  //color mode changing handler
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
@@ -37,8 +36,9 @@ function App() {
   
   const currentWeather = useSelector(state => state.weatherDetails?.currentWeather)
 
-  const isDayTime = useMemo(() => currentWeather.IsDayTime, [currentWeather])
+  const isDayTime = useMemo(() => currentWeather? currentWeather.IsDayTime : true, [currentWeather])
 
+  // set background color according to the daytime of the searched city
   const backgroundImage = useMemo(() => isDayTime? DayBackground : NightBackground, [isDayTime])
 
   const containerStyle = {
@@ -63,43 +63,34 @@ function App() {
 
   const dispatch = useDispatch()
 
+  // get the location key according to the lon/lat pair
   const getLocation = async({latLongPair}) => {
-    console.log(latLongPair, 'latLongPair')
     let requestParams = {
         apikey,
         q: latLongPair,
         language: 'en-us'
     }
     try {
-      // const res = (
-      //   `${BASE_URL}${END_POINT.LOCATIONS}/v1/cities/geoposition/search`, 
-      //   setParams(requestParams)
-      //   )
       const res = await axios.get(
         `${BASE_URL}${END_POINT.LOCATIONS}/v1/cities/geoposition/search`, 
         setParams(requestParams)
         )
-      console.log(res,'res')
     // const res = null
       if(res?.status === 200){
-        console.log(res.data, 'res.data')
           return res.data
       }
     } catch (error) {
         return 'error'
     }
   }
-
+  //get current location latitude and longitude according to which the city location key can be optained -->
+  //through the accuweather location api
   const getCurrentCoordinates = () => {
     navigator.geolocation.getCurrentPosition(
       async function(position) {
-      console.log("Latitude is :", position.coords.latitude);
-      console.log("Longitude is :", position.coords.longitude);
-      // send request to the accuweather locationKey api to receive the locationKey
       let myLocation = await getLocation({
         latLongPair: `${position.coords.latitude},${position.coords.longitude}`
-      })// {'\u00b0'}
-      // console.log(`${position.coords.latitude {\&#44} position.coords.longitude`}}, 'fggggggggg')
+      })
       if(myLocation){
         dispatch(weatherActions.setCurrentLocation({
           key: myLocation.Key, 
@@ -109,7 +100,8 @@ function App() {
       }
     },
       function(error) {
-        console.error("Error Code = " + error.code + " - " + error.message); 
+        // if there has been a denial to eccess the geolocation or an error has been appeared -->
+        // set Tel aviv as the default city
         dispatch(weatherActions.setCurrentLocation({
           key: 215854, 
           city: "Tel Aviv",
@@ -124,12 +116,12 @@ function App() {
   useEffect(() => {
     if(currentCity === null){
 
-      // getCurrentCoordinates()
-      dispatch(weatherActions.setCurrentLocation({
-        key: 215854, 
-        city: "Tel Aviv",
-        country: "Israel"
-      }))
+      getCurrentCoordinates()
+      // dispatch(weatherActions.setCurrentLocation({
+      //   key: 215854, 
+      //   city: "Tel Aviv",
+      //   country: "Israel"
+      // }))
     }
   },[currentCity])
 
@@ -143,9 +135,9 @@ function App() {
     <Snackbar/>
     <Grid sx={containerStyle}>
       <Routes>
-          <Route path='/*' element={<Navigate replace to='/home'/>}/>
-          <Route path='/home' element={<WeatherPage/>} />
-          <Route path='/favorites' element={<FavoritesPage/>} />
+        <Route path='/*' element={<Navigate replace to='/home'/>}/>
+        <Route path='/home' element={<WeatherPage/>} />
+        <Route path='/favorites' element={<FavoritesPage/>} />
       </Routes>
     </Grid>
     </div>

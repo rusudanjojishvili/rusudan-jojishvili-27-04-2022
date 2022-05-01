@@ -35,3 +35,12 @@ export const snackbarRoot = {
     //     right: '5%',
     // },
 }
+
+export const favoriteItemStyle = {
+    border: '1px solid #d7d4d4', 
+    p: '25px 5px', 
+    width: '200px',
+    height: '200px',
+    borderRadius:  '24px'
+}
+

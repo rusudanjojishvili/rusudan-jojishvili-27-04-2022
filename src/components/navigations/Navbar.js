@@ -37,7 +37,6 @@ const Topbar = ({ColorModeContext}) => {
 
     const changeTempType = (event, tempType) => {
       if (tempType !== null) {
-      console.log(tempType)
       dispatch(weatherActions.toggleTempType(tempType))
       }
     }
