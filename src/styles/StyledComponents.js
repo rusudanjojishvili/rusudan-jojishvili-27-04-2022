@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles'
-import { AppBar, TextField, Box, ListItem, Button, Alert, Grid } from '@mui/material'
+import { AppBar, TextField, Box, ListItem, Button, Alert, Grid, ToggleButton } from '@mui/material'
 
 export const CustomizedAppBar = styled(AppBar)({
   '&.MuiAppBar-root': {
@@ -103,5 +103,17 @@ export const CustomizedListItem = styled(ListItem)(({ theme, color }) => ({
      '&:hover': {
        backgroundColor: theme.palette.background.hover
      }
+  },
+}));
+export const CustomizedToggleButton = styled(ToggleButton)(({ theme, color }) => ({
+  '&.MuiToggleButton-root': {
+    borderRadius:10,
+    padding: '4px 8px',
+    border: '1px solid #FFFFFF40',
+    // color: '0000008a',
+    '&.Mui-selected':{
+      backgroundColor: '#FFFFFF40',
+      color: '#FFFFFF'
+    }
   },
 }));

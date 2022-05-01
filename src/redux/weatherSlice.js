@@ -559,6 +559,12 @@ export const weatherSlice = createSlice({
             console.log(action.payload, 'action.payload')
             state.currentLocation = action.payload
         },
+        toggleTempType: (state, action) => {
+           state.temperatureType = action.payload
+        },
+        setFavorites: (state, action) => {
+          state.favorites = action.payload
+        },
         addToFavorites: (state, action) => {
             const favoritesCopy = [...state.favorites]
             const favoriteIndex = favoritesCopy.findIndex(favorite =>favorite.id === action.payload.id)
@@ -568,6 +574,7 @@ export const weatherSlice = createSlice({
                 favoritesCopy.splice(favoriteIndex, 1)
             }
             state.favorites = favoritesCopy
+            localStorage.setItem('FAVORITES', JSON.stringify(state.favorites))
         }
     }
 })
@@ -591,12 +598,13 @@ export const getCurrentWeather = (locationId) => async(dispatch) => {
     }
 }
 
-export const getFiveDayForecast= (locationId) => async(dispatch) => {
+export const getFiveDayForecast= (locationId) => async(dispatch, getState) => {
+  const currentTempType = getState()?.weatherDetails?.temperatureType
     let requestParams = {
         apikey,
         language: 'en-us',
         details: false,
-        matric: true
+        metric: true
     }
     try {
       const res = await axios.get(
@@ -636,6 +644,8 @@ export const {
     setCurrentWeather,
     setFiveDateForecast,
     setCurrentLocation,
+    toggleTempType,
+    setFavorites,
     addToFavorites
 } = weatherSlice.actions
 

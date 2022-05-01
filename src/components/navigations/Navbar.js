@@ -1,9 +1,11 @@
 import React from 'react'
 import { useTheme } from '@mui/material/styles'
 import { Grid, Navbar, Container, AppBar, Typography, Box, Menu, MenuItem, Button, Toolbar,
-IconButton} from '@mui/material'
-import { CustomizedAppBar } from '../../styles/StyledComponents'
+IconButton, ToggleButtonGroup, ToggleButton } from '@mui/material'
+import { CustomizedAppBar, CustomizedToggleButton } from '../../styles/StyledComponents'
 import MenuIcon from '@mui/icons-material/Menu'
+import { useSelector, useDispatch } from 'react-redux'
+import * as weatherActions from '../../redux/weatherSlice'
 import { NavLink } from 'react-router-dom'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
@@ -11,7 +13,9 @@ import Brightness7Icon from '@mui/icons-material/Brightness7'
 
 const Topbar = ({ColorModeContext}) => {
     const theme = useTheme()
+    const dispatch = useDispatch()
     const colorMode = React.useContext(ColorModeContext)
+    const temperatureType = useSelector(state => state.weatherDetails?.temperatureType)
 
     const [anchorElNav, setAnchorElNav] = React.useState(null)
     const [anchorElUser, setAnchorElUser] = React.useState(null)
@@ -30,6 +34,13 @@ const Topbar = ({ColorModeContext}) => {
     const handleCloseUserMenu = () => {
       setAnchorElUser(null);
     };
+
+    const changeTempType = (event, tempType) => {
+      if (tempType !== null) {
+      console.log(tempType)
+      dispatch(weatherActions.toggleTempType(tempType))
+      }
+    }
   
     return (
       <CustomizedAppBar position="fixed">
@@ -41,7 +52,7 @@ const Topbar = ({ColorModeContext}) => {
               component="div"
               sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
             >
-              LOGO
+              Weather app
             </Typography>
   
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -71,17 +82,24 @@ const Topbar = ({ColorModeContext}) => {
                 onClose={handleCloseNavMenu}
                 sx={{
                   display: { xs: 'block', md: 'none' },
+                  '& .MuiMenu-paper':{
+                    borderRadius: 5
+                  }
                 }}
               >
                 {/* {pages.map((page) => ( */}
                   <MenuItem 
-                //   key={page} 
-                  onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">Weather forecast</Typography>
+                  component={NavLink}
+                  to='/home'
+                  onClick={handleCloseNavMenu}
+                  >
+                    <Typography textAlign="center">Home</Typography>
                   </MenuItem>
                   <MenuItem 
-                //   key={page} 
-                  onClick={handleCloseNavMenu}>
+                  component={NavLink}
+                  to='/favorites'
+                  onClick={handleCloseNavMenu}
+                  >
                     <Typography textAlign="center">Favorites</Typography>
                   </MenuItem>
                 {/* ))} */}
@@ -93,7 +111,7 @@ const Topbar = ({ColorModeContext}) => {
               component="div"
               sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
             >
-              LOGO
+              Weather app
             </Typography>
             <Box sx={{ flexGrow: 1, alignItems: 'center', display: { xs: 'none', md: 'flex' } }}>
               {/* {pages.map((page) => ( */}
@@ -117,12 +135,29 @@ const Topbar = ({ColorModeContext}) => {
                 >
                   Favorites
                 </Button>
-                <IconButton 
+
+              {/* ))} */}
+            </Box>
+            <Box>
+              <IconButton 
                 sx={{ ml: 2, width: '40px', height: '40px' }} 
                 onClick={colorMode.toggleColorMode} color="inherit">
                     {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-                </IconButton>
-              {/* ))} */}
+              </IconButton>
+              <ToggleButtonGroup
+                  value={temperatureType}
+                  exclusive
+                  sx={{ml: {sx:1, sm: 2}}}
+                  onChange={changeTempType}
+                  aria-label="text alignment"
+                >
+                <CustomizedToggleButton value="Metric" aria-label="Metric">
+                  <Typography>{'\u00b0'}C</Typography>
+                </CustomizedToggleButton>
+                <CustomizedToggleButton value="Imperial" aria-label="Imperial">
+                  <Typography>{'\u00b0'}F</Typography>
+                </CustomizedToggleButton>
+              </ToggleButtonGroup>
             </Box>
           </Toolbar>
         </Container>

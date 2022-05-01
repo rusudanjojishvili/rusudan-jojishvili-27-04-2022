@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import * as weatherActions from '../redux/weatherSlice'
 import { innerContainer } from '../styles/WeatherStyleSXConstants'
 import { CustomizedButton } from '../styles/StyledComponents'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 
 function FavoritesPage() {
     const favorites = useSelector(state => state.weatherDetails?.favorites)
@@ -46,8 +47,9 @@ function FavoritesPage() {
             </Grid>
           </Grid>:
           <Grid item xs={12}>
-          <Grid container justifyContent='center'>
+          <Grid container justifyContent='center' direction='column' alignItems='center'>
             <Typography variant='h3'>No favorites yet</Typography>
+            <Typography variant='subtitle2' sx={{mt:2}}>Click the <FavoriteBorderIcon/> icon to keep track of your favourite city weather</Typography>
           </Grid>
           </Grid>
          } 

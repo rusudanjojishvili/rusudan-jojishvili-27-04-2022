@@ -25,8 +25,15 @@ useEffect(() => {
   if(currentCity){
     // dispatch(weatherActions.getCurrentWeather(currentCity.key))
     // dispatch(weatherActions.getFiveDayForecast(currentCity.key))
+
   }
 },[currentCity])
+
+// useEffect(() => {
+//   if(temperatureType && currentCity){
+//     dispatch(weatherActions.getFiveDayForecast(currentCity.key))
+//   }
+// },[temperatureType, currentCity])
 
 // useEffect(() => {
 //   if(currentCity === null)
@@ -117,7 +124,7 @@ const renderWeatherDetail = (title, value, unit) => (
               </Grid>
               <Grid item >
                 <Typography variant='h4'>
-                {currentWeather?.Temperature?.Metric?.Value}
+                {currentWeather?.Temperature?.[temperatureType]?.Value}
                 </Typography>
               </Grid>
               <Grid item sx={{mt:1, ml: 1}}>

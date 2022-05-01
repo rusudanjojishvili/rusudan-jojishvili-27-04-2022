@@ -51,6 +51,14 @@ function App() {
     padding: {xs:'20px 10px', sm: '20px'}
   }
 
+  useEffect(() => {
+    let favorites = JSON.parse(localStorage.getItem('FAVORITES'))
+    // Update redux state when user refreshed the page
+    if (favorites) {
+      dispatch(weatherActions.setFavorites(favorites))
+    }
+  }, [])
+
   const currentCity = useSelector(state => state.weatherDetails?.currentLocation)
 
   const dispatch = useDispatch()
