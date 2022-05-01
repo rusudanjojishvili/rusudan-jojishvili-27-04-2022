@@ -1,11 +1,13 @@
 
-export const BASE_URL = 'http://dataservice.accuweather.com/'
+export const BASE_URL = process.env.REACT_APP_BASE_URL + '/'
 
 export const END_POINT = {
     CURRENT_CONDITIONS:'currentconditions',
     FORECASTS: 'forecasts',
     LOCATIONS: 'locations'
 }
+// export const apikey = 'VGYzZ5LOPNl4qGfGYu6s4VbPqRtkZ7XI'
+// export const apikey = '3IGuGfQ8aE7xhQ1V2CkC0RQJSTsAdriT'
 export const apikey = 'AnAVVmha9YFZ9Sh5FUUgxuidXTtAe932'
 
 // global theme definitions
