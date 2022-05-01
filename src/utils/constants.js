@@ -1,5 +1,5 @@
 
-export const BASE_URL = 'http://dataservice.accuweather.com/'
+export const BASE_URL = 'https://dataservice.accuweather.com/'
 
 export const END_POINT = {
     CURRENT_CONDITIONS:'currentconditions',
