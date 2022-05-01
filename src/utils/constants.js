@@ -6,9 +6,9 @@ export const END_POINT = {
     FORECASTS: 'forecasts',
     LOCATIONS: 'locations'
 }
-export const apikey = 'VGYzZ5LOPNl4qGfGYu6s4VbPqRtkZ7XI'
+// export const apikey = 'VGYzZ5LOPNl4qGfGYu6s4VbPqRtkZ7XI'
 // export const apikey = '3IGuGfQ8aE7xhQ1V2CkC0RQJSTsAdriT'
-// export const apikey = 'AnAVVmha9YFZ9Sh5FUUgxuidXTtAe932'
+export const apikey = 'AnAVVmha9YFZ9Sh5FUUgxuidXTtAe932'
 
 // global theme definitions
 export const getDesignTokens = (mode) =>({

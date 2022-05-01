@@ -86,6 +86,7 @@ export const getFiveDayForecast= (locationId) => async(dispatch, getState) => {
 }
 
 
+
 export const {
     setCurrentWeather,
     setFiveDateForecast,

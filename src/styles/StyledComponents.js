@@ -63,7 +63,12 @@ export const CustomizedGrid = styled(Box)({
     borderRadius: '10px',   
   },
   '&::-webkit-scrollbar-thumb': {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#fffefea6',
+    borderRadius: '10px',
+    height: '10px'
+  },
+  '&::-webkit-scrollbar-thumb:hover': {
+    backgroundColor: '#ffffffcf',
     borderRadius: '10px',
     height: '10px'
   },

@@ -48,7 +48,25 @@ function App() {
     backgroundImage:`url(${backgroundImage})`,
     backgroundPosition: isDayTime?'0% 45%' : '0% 0%', 
     backgroundSize: 'cover',
-    padding: {xs:'20px 10px', sm: '20px'}
+    padding: {xs:'20px 10px', sm: '20px'},
+    '&::-webkit-scrollbar': {
+      width: '10px',
+      height: '3px',
+    },
+    '&::-webkit-scrollbar-track': {
+      boxShadow: 'inset 0 0 5px #1f576e',
+      borderRadius: '10px',   
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: '#fffefea6',
+      borderRadius: '10px',
+      height: '10px'
+    },
+    '&::-webkit-scrollbar-thumb:hover': {
+      backgroundColor: '#ffffffcf',
+      borderRadius: '10px',
+      height: '10px'
+    },
   }
 
   useEffect(() => {
